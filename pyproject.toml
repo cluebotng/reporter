@@ -1,0 +1,62 @@
+[project]
+name = "reporter"
+requires-python = ">=3.15"
+dependencies = [
+    "Django",
+    "social-auth-app-django",
+    "mysqlclient",
+    "requests",
+    "deepmerge",
+    "django_bootstrap5",
+    "PyYAML",
+    "uvicorn",
+    "whitenoise",
+    "redis",
+    "prometheus-client",
+    "django-prometheus",
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.test.dependencies]
+tox = "*"
+tox-current-env = "*"
+black = "*"
+ruff = "*"
+djlint = "*"
+bandit = "*"
+pytest-django = "*"
+pytest = "*"
+freezegun = "*"
+
+[tool.ruff]
+exclude = ['*/migrations/*', 've/*', '.tox/*']
+line-length = 120
+
+[tool.djlint]
+profile = 'django'
+use_gitignore = true
+max_attribute_length = 120
+
+[tool.black]
+line-length = 120
+extend-exclude = '''
+(
+  ^/ve
+  |
+  ^.*/migrations/.*
+)
+'''
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "cbng_reporter.settings"
+addopts = "--strict-markers"
+markers = [
+    "unmarked",
+    "integration",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
