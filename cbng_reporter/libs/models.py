@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
 
@@ -27,3 +27,10 @@ class Diff:
     @property
     def revisions(self) -> tuple[Revision, Revision]:
         return self.old, self.new
+
+
+@dataclass
+class ImportResult:
+    processed_groups: list[int] = field(default_factory=list)
+    expected_statuses: dict[int, int] = field(default_factory=dict)
+    updated_edit_ids: list[int] = field(default_factory=list)
