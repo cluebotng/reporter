@@ -1,4 +1,5 @@
 import pathlib
+from unittest import mock
 
 import pytest
 from django.db import connections
@@ -38,3 +39,16 @@ def pytest_collection_modifyitems(config, items):
 
         if not any(item.iter_markers()):
             item.add_marker(pytest.mark.unmarked)
+
+
+@pytest.fixture(autouse=True)
+def mock_wikipedia(request):
+    if request.node.get_closest_marker("integration"):
+        yield None
+        return
+
+    with (
+        mock.patch("cbng_reporter.libs.wikipedia.WikipediaReader.get_diff", return_value=None),
+        mock.patch("cbng_reporter.libs.wikipedia.WikipediaReader.get_user_rights", return_value=set()) as rights,
+    ):
+        yield rights
