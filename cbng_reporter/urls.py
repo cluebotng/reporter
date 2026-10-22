@@ -8,6 +8,7 @@ from cbng_reporter import views
 urlpatterns = [
     # For developers
     path("internal/health/", lambda r: HttpResponse("OK")),
+    path("internal/metrics/", views.metrics),
     # Authentication
     path(
         "oauth/",

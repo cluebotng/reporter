@@ -3,10 +3,11 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST, require_safe
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from cbng_reporter.constants import (
     ANONYMOUS_USERNAME,
@@ -17,6 +18,7 @@ from cbng_reporter.constants import (
 )
 from cbng_reporter.forms import CommentForm, OptionsForm, ReportForm, RevertLookupForm, StatusForm
 from cbng_reporter.legacy import legacy_page_redirect
+from cbng_reporter.libs.metrics import MetricsExporter
 from cbng_reporter.libs.reports import create_comment, create_report, get_next_pending_report, update_status
 from cbng_reporter.libs.wikipedia import WikipediaReader
 from cbng_reporter.models import Comment, Report, User, Vandalism
@@ -55,6 +57,12 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect("report-list")
+
+
+@require_safe
+def metrics(request):
+    MetricsExporter().update_metrics()
+    return HttpResponse(content=generate_latest(), content_type=CONTENT_TYPE_LATEST)
 
 
 @require_safe
