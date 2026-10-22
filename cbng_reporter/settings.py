@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django_prometheus",
+    "social_django",
     "django_bootstrap5",
     "cbng_reporter",
 ]
@@ -36,6 +37,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
+    "cbng_reporter.libs.django.AuthenticatedRequestLogMiddleware",
     "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
@@ -123,7 +126,26 @@ LOGGING = {
     },
 }
 
+SOCIAL_AUTH_MEDIAWIKI_KEY = CONFIG["oauth"]["key"]
+SOCIAL_AUTH_MEDIAWIKI_SECRET = CONFIG["oauth"]["secret"]
+SOCIAL_AUTH_MEDIAWIKI_URL = "https://en.wikipedia.org/w/index.php"
+SOCIAL_AUTH_MEDIAWIKI_CALLBACK = "oob"
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "cbng_reporter.libs.auth.pipeline.reject_blocked_users",
+    "cbng_reporter.libs.auth.pipeline.get_or_create_user",
+    "cbng_reporter.libs.auth.pipeline.check_for_auto_admin_rights",
+)
+SOCIAL_AUTH_ACTIVE_USERS_FILTER = {}
+SOCIAL_AUTH_BACKEND_NAME = "mediawiki"
+
+AUTHENTICATION_BACKENDS = ["social_core.backends.mediawiki.MediaWiki"]
 AUTH_USER_MODEL = "cbng_reporter.User"
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/reports/"
+SOCIAL_AUTH_LOGIN_ERROR_URL = "/"
 
 BOOTSTRAP5 = {
     "css_url": {

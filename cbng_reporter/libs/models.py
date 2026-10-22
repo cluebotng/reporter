@@ -3,6 +3,14 @@ from datetime import datetime
 
 
 @dataclass
+class SocialLogin:
+    """Stand in for `UserSocialAuth`, social auth only needs the provider to complete the login"""
+
+    provider: str
+    uid: str
+
+
+@dataclass
 class Revision:
     id: int
     user: str | None
