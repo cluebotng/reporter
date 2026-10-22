@@ -24,6 +24,8 @@ urlpatterns = [
     ),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
+    # API
+    path("api/", include("cbng_reporter.api.urls")),
     # Admin
     path("admin/", include("cbng_reporter.admin.urls")),
     # Reporting
