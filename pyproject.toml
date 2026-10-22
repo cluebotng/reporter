@@ -1,6 +1,6 @@
 [project]
 name = "reporter"
-requires-python = ">=3.15"
+requires-python = ">=3.14"
 dependencies = [
     "Django",
     "social-auth-app-django",
