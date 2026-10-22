@@ -16,6 +16,7 @@ from cbng_reporter.constants import (
     ReportStatus,
 )
 from cbng_reporter.forms import CommentForm, OptionsForm, ReportForm, RevertLookupForm, StatusForm
+from cbng_reporter.legacy import legacy_page_redirect
 from cbng_reporter.libs.reports import create_comment, create_report, get_next_pending_report, update_status
 from cbng_reporter.libs.wikipedia import WikipediaReader
 from cbng_reporter.models import Comment, Report, User, Vandalism
@@ -30,6 +31,9 @@ STATUS_ACTIONS = [
 
 
 def home(request):
+    if response := legacy_page_redirect(request):
+        return response
+
     return render(request, "cbng_reporter/home.html", {"form": RevertLookupForm()})
 
 

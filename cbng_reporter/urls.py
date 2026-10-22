@@ -42,5 +42,6 @@ urlpatterns = [
     # User
     path("options/", views.options, name="options"),
     # Public
+    path("index.php", views.home),
     path("", views.home, name="home"),
 ]
