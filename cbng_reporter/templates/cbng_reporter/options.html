@@ -1,0 +1,13 @@
+{% extends "cbng_reporter/base.html" %}
+{% load django_bootstrap5 %}
+{% block page_header %}
+    Options
+{% endblock page_header %}
+{% block content %}
+    <form action="{% url 'options' %}" method="post">
+        {% csrf_token %}
+        <h3 class="h5">General options</h3>
+        {% bootstrap_form form %}
+        <button type="submit" class="mt-2">Save</button>
+    </form>
+{% endblock content %}

@@ -1,0 +1,69 @@
+{% extends "django_bootstrap5/bootstrap5.html" %}
+{% load django_bootstrap5 static %}
+{% block bootstrap5_title %}
+    ClueBot NG Report Interface
+{% endblock bootstrap5_title %}
+{% block bootstrap5_extra_head %}
+    <link rel="stylesheet" href="{% static 'css/diff.css' %}">
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
+{% endblock bootstrap5_extra_head %}
+{% block bootstrap5_content %}
+    <div class="container-fluid">
+        <header class="d-flex flex-wrap align-items-center justify-content-between py-3 border-bottom report-border">
+            <h1 class="h2 mb-0 ms-md-3">ClueBot NG Report Interface</h1>
+            <h1 class="h2 mb-0 me-md-3">
+                //
+                {% block page_header %}
+                {% endblock page_header %}
+            </h1>
+        </header>
+        <div class="row">
+            <nav class="col-md-3 col-xl-2 border-end report-border" id="navigation">
+                <h2>Navigation</h2>
+                <ul>
+                    <li>
+                        <a href="{% url 'home' %}">Main</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'report-list' %}">List</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <form class="d-inline" action="{% url 'logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link p-0 align-baseline">Sign Out</button>
+                            </form>
+                        </li>
+                        <li>
+                            <a href="{% url 'options' %}">Options</a>
+                        </li>
+                        {% if perms.cbng_reporter.manage_users %}
+                            <li>
+                                <a href="{% url 'admin-users' %}">User Admin</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            <button type="submit"
+                                    form="sign-in-form"
+                                    class="btn btn-link p-0 align-baseline">Sign In</button>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% if not user.is_authenticated %}
+                <form id="sign-in-form" class="d-none" action="{% url 'social:begin' 'mediawiki' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden"
+                           name="next"
+                           value="{% if request.resolver_match.url_name == 'login' %}{{ next_url }}{% else %}{{ request.get_full_path }}{% endif %}">
+                </form>
+            {% endif %}
+            <main class="col-md-9 col-xl-10 pt-3 pb-5">
+                {% bootstrap_messages %}
+                {% block content %}
+                {% endblock content %}
+            </main>
+        </div>
+    </div>
+{% endblock bootstrap5_content %}

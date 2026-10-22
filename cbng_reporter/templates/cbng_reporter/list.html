@@ -1,0 +1,35 @@
+{% extends "cbng_reporter/base.html" %}
+{% block page_header %}
+    List
+    {% if hide_anonymous %}(Anonymous hidden){% endif %}
+{% endblock page_header %}
+{% block content %}
+    <table class="table table-sm table-hover w-auto">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Reporter</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in page_obj %}
+                <tr>
+                    <td>
+                        <a href="{% url 'report-view' report.vandalism_id %}">{{ report.vandalism_id }}</a>
+                    </td>
+                    <td>{{ report.reporter }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if show_all %}&amp;show_all=1{% endif %}">« Previous Page</a>&nbsp;
+        {% endif %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if show_all %}&amp;show_all=1{% endif %}">Next Page »</a>
+        {% endif %}
+    </p>
+{% endblock content %}

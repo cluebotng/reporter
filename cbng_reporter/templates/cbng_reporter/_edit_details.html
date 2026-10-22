@@ -1,0 +1,56 @@
+<table class="table table-sm table-borderless reporttable">
+    <tr>
+        <th>ID:</th>
+        <td>{{ vandalism.id }}</td>
+    </tr>
+    <tr>
+        <th>User:</th>
+        <td>{{ vandalism.user }}</td>
+    </tr>
+    <tr>
+        <th>Article:</th>
+        <td>{{ vandalism.article }}</td>
+    </tr>
+    <tr>
+        <th>Diff:</th>
+        <td class="diffborder">
+            {% if diff %}
+                <table class="diff">
+                    <colgroup>
+                        <col class="diff-marker">
+                        <col class="diff-content">
+                        <col class="diff-marker">
+                        <col class="diff-content">
+                    </colgroup>
+                    <tr>
+                        {% for revision in diff.revisions %}
+                            <td colspan="2" class="{% if forloop.first %}diff-otitle{% else %}diff-ntitle{% endif %}">
+                                <a href="https://en.wikipedia.org/w/index.php?oldid={{ revision.id }}">Revision as of {{ revision.timestamp|date:"H:i, j F Y" }}</a>
+                                <br>
+                                {% if revision.user %}
+                                    <a href="https://en.wikipedia.org/wiki/Special:Contributions/{{ revision.user|urlencode }}">{{ revision.user }}</a>
+                                {% else %}
+                                    <i>(username removed)</i>
+                                {% endif %}
+                                {% if revision.comment %}
+                                    <br>
+                                    <i>({{ revision.comment }})</i>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {{ diff.html|safe }}
+                </table>
+            {% else %}
+                <p class="text-danger mb-0">
+                    Failed to load the diff from Wikipedia,
+                    <a href="https://en.wikipedia.org/w/index.php?diff={{ vandalism.new_id }}">view it on Wikipedia</a>.
+                </p>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Reason:</th>
+        <td>{{ vandalism.reason }}</td>
+    </tr>
+</table>

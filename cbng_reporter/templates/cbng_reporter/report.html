@@ -1,0 +1,58 @@
+{% extends "cbng_reporter/base.html" %}
+{% block page_header %}
+    Report
+{% endblock page_header %}
+{% block content %}
+    <form action="{% url 'report' vandalism.id %}" method="post">
+        {% csrf_token %}
+        {% include "cbng_reporter/_edit_details.html" %}
+        <table class="table table-sm table-borderless reporttable">
+            <tr>
+                <th>Username:</th>
+                <td>
+                    {% if user.is_authenticated %}
+                        {{ user.username }}
+                    {% else %}
+                        Anonymous <i>
+                        <button type="submit"
+                                form="sign-in-form"
+                                class="btn btn-link p-0 align-baseline fst-italic">sign in</button>
+                        </i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Reverted:</th>
+                <td>
+                    {% if vandalism.reverted %}
+                        Yes
+                    {% else %}
+                        <b><u><span class="text-danger">No</span></u></b>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if vandalism.reverted %}
+                <tr>
+                    <th>
+                        <label for="{{ form.comment.id_for_label }}">Comment</label>
+                        <br>
+                        (optional):
+                    </th>
+                    <td>
+                        {{ form.comment }}
+                        <small class="d-block mt-1">
+                            <em>Note</em>: Comments are completely optional. You do not have to justify your edit.
+                            <br>
+                            If this is a false positive, then you're right, and the bot is wrong - you don't need to explain why.
+                        </small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Report false positive</button>
+                    </td>
+                </tr>
+            {% endif %}
+        </table>
+    </form>
+{% endblock content %}

@@ -1,0 +1,12 @@
+{% extends "cbng_reporter/base.html" %}
+{% block page_header %}
+    Sign In
+{% endblock page_header %}
+{% block content %}
+    <p>Sign in using your Wikipedia account.</p>
+    <form action="{% url 'social:begin' 'mediawiki' %}" method="post">
+        {% csrf_token %}
+        {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
+        <button type="submit">Sign in with Wikipedia</button>
+    </form>
+{% endblock content %}

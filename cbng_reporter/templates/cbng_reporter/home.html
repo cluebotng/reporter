@@ -1,0 +1,50 @@
+{% extends "cbng_reporter/base.html" %}
+{% block page_header %}
+    Report
+{% endblock page_header %}
+{% block content %}
+    <h3 class="h5">You need to get ClueBot NG's revert ID, there are two ways to do this:</h3>
+    <p class="fw-bold mt-3 mb-0">From the article:</p>
+    <div class="image">
+        <img alt=""
+             src="//thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/ClueBot_False_Positive_Method_1_Step_1.png/960px-ClueBot_False_Positive_Method_1_Step_1.png"
+             width="600"
+             height="63">
+        <br>
+        <small>Click the history tab at the top of the article.</small>
+    </div>
+    <div class="image">
+        <img alt=""
+             src="//thumb.wikimedia.org/wikipedia/commons/thumb/1/10/ClueBot_False_Positive_Method_1_Step_2.png/960px-ClueBot_False_Positive_Method_1_Step_2.png"
+             width="600"
+             height="180">
+        <br>
+        <small>The revert ID is in parenthesis right after "Thanks, ClueBot NG".</small>
+    </div>
+    <p class="fw-bold mt-3 mb-0">From your talk page:</p>
+    <div class="image">
+        <img alt=""
+             src="//thumb.wikimedia.org/wikipedia/commons/thumb/6/60/ClueBot_False_Positive_Method_2_Step_1.png/960px-ClueBot_False_Positive_Method_2_Step_1.png"
+             width="600"
+             height="60">
+        <br>
+        <small>Click the "edit this page" tab at the top of the page.</small>
+    </div>
+    <div class="image">
+        <img alt=""
+             src="//thumb.wikimedia.org/wikipedia/commons/thumb/2/20/ClueBot_False_Positive_Method_2_Step_2.png/960px-ClueBot_False_Positive_Method_2_Step_2.png"
+             width="600"
+             height="241">
+        <br>
+        <small>The revert ID is in the text right after "MySQL ID:".</small>
+    </div>
+    <form action="{% url 'report-lookup' %}" method="get" class="row row-cols-auto g-2 align-items-center mt-2">
+        <div class="col">
+            <label for="{{ form.id.id_for_label }}" class="col-form-label">Revert ID:</label>
+        </div>
+        <div class="col">{{ form.id }}</div>
+        <div class="col">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+{% endblock content %}

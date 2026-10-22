@@ -1,0 +1,104 @@
+{% extends "cbng_reporter/base.html" %}
+{% load reporter static %}
+{% block page_header %}
+    Viewing {{ vandalism.id }}
+{% endblock page_header %}
+{% block content %}
+    {% include "cbng_reporter/_edit_details.html" %}
+    <table class="table table-sm table-borderless reporttable reportertable">
+        <tr>
+            <th colspan="2" class="text-center">Reporter Information</th>
+        </tr>
+        <tr>
+            <th>Reporter:</th>
+            <td>
+                {{ report.reporter }}
+                {% if report.is_anonymous %}<small>(anonymous)</small>{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>Date:</th>
+            <td>{{ report.timestamp|report_date }}</td>
+        </tr>
+        <tr>
+            <th>Status:</th>
+            <td>
+                {{ report.get_status_display }}
+                {% if perms.cbng_reporter.manage_reports %}
+                    (
+                    {% for status, label, shortcut_hint, shortcut_keys in status_actions %}
+                        <form class="d-inline"
+                              action="{% url 'report-status' vandalism.id %}"
+                              method="post"
+                              {% if user.keyboard_shortcuts and shortcut_keys %}data-shortcut-keys="{{ shortcut_keys }}"{% endif %}>
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="{{ status.value }}">
+                            <button type="submit" class="btn btn-link p-0 status-action">
+                                {{ label }}
+                                {% if user.keyboard_shortcuts and shortcut_hint %}({{ shortcut_hint }}){% endif %}
+                            </button>
+                        </form>
+                        {% if not forloop.last %}·{% endif %}
+                    {% endfor %}
+                    )
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% for comment in comments %}
+        <div class="comment" id="cmt{{ comment.id }}">
+            <div class="commentheader d-flex justify-content-between">
+                <span class="commentdate">{{ comment.timestamp|report_date }}</span>
+                <span class="commentid">
+                    {% if perms.cbng_reporter.manage_users %}
+                        <form class="d-inline"
+                              action="{% url 'report-comment-delete' vandalism.id comment.id %}"
+                              method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="btn btn-link btn-sm p-0 status-action"
+                                    title="Delete comment">(x)</button>
+                        </form>
+                        ·
+                    {% endif %}
+                    <a href="#cmt{{ comment.id }}">#{{ comment.id }}</a>
+                </span>
+            </div>
+            <div class="row g-0">
+                <div class="col-sm-4 col-lg-3 col-xl-2 commentuser">
+                    {{ comment.username }}
+                    {% if comment.is_anonymous %}<small>(anonymous)</small>{% endif %}
+                    {% if comment.author.is_superadmin %}
+                        <small>(super admin)</small>
+                    {% elif comment.author.is_admin %}
+                        <small>(admin)</small>
+                    {% endif %}
+                </div>
+                <div class="col-sm-8 col-lg-9 col-xl-10 commentbody">{{ comment.comment|linebreaks }}</div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if user.is_authenticated %}
+        <form action="{% url 'report-comment' vandalism.id %}" method="post">
+            {% csrf_token %}
+            <table class="table table-sm table-borderless reporttable">
+                <tr>
+                    <th>
+                        <label for="{{ comment_form.comment.id_for_label }}">Comment:</label>
+                    </th>
+                    <td>{{ comment_form.comment }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit">Post comment</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    {% endif %}
+{% endblock content %}
+{% block bootstrap5_extra_script %}
+    {% if perms.cbng_reporter.manage_reports and user.keyboard_shortcuts %}
+        <script src="{% static 'js/shortcuts.js' %}"></script>
+    {% endif %}
+{% endblock bootstrap5_extra_script %}

@@ -1,0 +1,82 @@
+/*
+** Styling carried over from the legacy interface
+*/
+:root {
+    --report-border-color: #d3e1f9;
+}
+
+.report-border {
+    border-color: var(--report-border-color) !important;
+}
+
+#navigation h2 {
+    padding-top: 1em;
+    padding-bottom: .17em;
+    padding-left: 1em;
+    border-bottom: 1px solid var(--report-border-color);
+    font-size: 120%;
+}
+
+.image {
+    border: 1px dashed var(--report-border-color);
+    margin: 10px 0;
+    padding: 5px;
+    max-width: 612px;
+}
+
+.image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.reporttable th {
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    width: 1%;
+}
+
+.reportertable, .diffborder {
+    border: 1px dashed #000000 !important;
+}
+
+.diffborder {
+    overflow-x: auto;
+}
+
+.diffborder table.diff {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.comment {
+    border: 1px dashed #000000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.commentheader {
+    background: #aaffaa;
+    border-bottom: 1px solid var(--report-border-color);
+    padding: 5px;
+    font-size: small;
+}
+
+.commentuser {
+    background: #eefeee;
+    padding: 5px;
+}
+
+.commentbody {
+    border-left: 1px solid var(--report-border-color);
+    min-height: 100px;
+    padding: 5px;
+}
+
+.commentbody p:last-child {
+    margin-bottom: 0;
+}
+
+.status-action {
+    vertical-align: baseline;
+}

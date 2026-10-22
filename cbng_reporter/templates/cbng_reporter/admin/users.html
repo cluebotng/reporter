@@ -1,0 +1,51 @@
+{% extends "cbng_reporter/base.html" %}
+{% block page_header %}
+    User Admin
+{% endblock page_header %}
+{% block content %}
+    <table class="table table-sm table-bordered w-auto">
+        <thead>
+            <tr>
+                <th scope="col">Actions</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Admin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in users %}
+                <tr>
+                    <td class="text-nowrap">
+                        {% if account.is_superadmin %}
+                            None
+                        {% else %}
+                            {% for action, label, title in user_actions %}
+                                <form class="d-inline"
+                                      action="{% url 'admin-user-action' account.id action %}"
+                                      method="post"
+                                      {% if action == 'delete' %}onsubmit="return confirm('Delete {{ account.username|escapejs }}?');"{% endif %}>
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn btn-link p-0 status-action"
+                                            title="{{ title }}">{{ label }}</button>
+                                </form>
+                                {% if not forloop.last %}·{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>{{ account.id }}</td>
+                    <td>{{ account.username }}</td>
+                    <td>
+                        {% if account.is_superadmin %}
+                            super
+                        {% elif account.is_admin %}
+                            yes
+                        {% else %}
+                            no
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
