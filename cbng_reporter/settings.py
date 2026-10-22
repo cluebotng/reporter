@@ -74,6 +74,8 @@ DATABASES = {
     },
 }
 
+DATABASE_ROUTERS = ["cbng_reporter.libs.database.DatabaseRouter"]
+
 REDIS_HOST = CONFIG["redis"]["host"]
 REDIS_PORT = CONFIG["redis"]["port"]
 REDIS_DB = CONFIG["redis"]["db"]
@@ -120,6 +122,8 @@ LOGGING = {
         "cbng_reporter.access_log": {"handlers": ["console_message"], "level": "INFO", "propagate": False},
     },
 }
+
+AUTH_USER_MODEL = "cbng_reporter.User"
 
 BOOTSTRAP5 = {
     "css_url": {

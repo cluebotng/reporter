@@ -1,0 +1,26 @@
+-- Schema of the tables managed by the bot, as found in
+-- https://github.com/cluebotng/bot/blob/main/cluebot.sql
+-- Our own tables are created by migrations
+CREATE TABLE IF NOT EXISTS `vandalism` (
+  `id` int(11) NOT NULL auto_increment,
+  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `user` varchar(256) NOT NULL,
+  `article` varchar(256) NOT NULL,
+  `heuristic` varchar(64) NOT NULL,
+  `regex` varchar(2048) default NULL,
+  `reason` varchar(512) NOT NULL,
+  `diff` varchar(512) NOT NULL,
+  `old_id` int(11) NOT NULL,
+  `new_id` int(11) NOT NULL,
+  `reverted` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `beaten` (
+  `id` int(11) NOT NULL auto_increment,
+  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `article` varchar(256) NOT NULL,
+  `diff` varchar(512) NOT NULL,
+  `user` varchar(256) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
