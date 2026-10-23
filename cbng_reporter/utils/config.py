@@ -49,7 +49,7 @@ def load_config(base_dir: Path, in_test: bool) -> dict[str, Any]:
         },
         "reviewer": {
             "url": os.environ.get(
-                "CBNG_REVIEWER_URL", "http://cluebotng-reviewer.tool-cluebotng-review.svc.tools.local"
+                "CBNG_REVIEWER_URL", "http://cluebotng-reviewer.tool-cluebotng-review.svc.tools.local:8000"
             ),
         },
     }
