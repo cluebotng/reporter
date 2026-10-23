@@ -28,6 +28,9 @@ def load_config(base_dir: Path, in_test: bool) -> dict[str, Any]:
             "secret_key": os.environ.get("DJANGO_SECRET_KEY", "development do not use"),
             "debug": False,
         },
+        "monitoring": {
+            "shared_secret": os.environ.get("MONITORING_SHARED_SECRET"),
+        },
         "mysql": {
             "default": {
                 "schema": os.environ.get("TOOL_TOOLSDB_SCHEMA", "cbng_reporter"),

@@ -181,6 +181,7 @@ REVIEWER_URL = CONFIG["reviewer"]["url"]
 CBNG_REPORTS_PER_PAGE = 50
 
 PROMETHEUS_METRIC_NAMESPACE = "cbng_reporter"
+MONITORING_SHARED_SECRET = CONFIG["monitoring"]["shared_secret"]
 prometheus_client.REGISTRY.unregister(prometheus_client.GC_COLLECTOR)
 prometheus_client.REGISTRY.unregister(prometheus_client.PLATFORM_COLLECTOR)
 prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)

@@ -1,9 +1,11 @@
+import hmac
+
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST, require_safe
@@ -61,6 +63,11 @@ def logout(request):
 
 @require_safe
 def metrics(request):
+    if settings.MONITORING_SHARED_SECRET and not hmac.compare_digest(
+        request.headers.get("Authorization", "").encode(), f"Bearer {settings.MONITORING_SHARED_SECRET}".encode()
+    ):
+        return HttpResponseForbidden()
+
     MetricsExporter().update_metrics()
     return HttpResponse(content=generate_latest(), content_type=CONTENT_TYPE_LATEST)
 
