@@ -5,7 +5,7 @@ class MetricsTestCase(TestCase):
     def testMetricsWithoutSharedSecret(self):
         self.assertEqual(self.client.get("/internal/metrics/").status_code, 200)
 
-    @override_settings(MONITORING_SHARED_SECRET="very secret")
+    @override_settings(MONITORING_SHARED_SECRET="very secret")  # nosec B106
     def testMetricsWithSharedSecret(self):
         self.assertEqual(self.client.get("/internal/metrics/").status_code, 403)
         self.assertEqual(
