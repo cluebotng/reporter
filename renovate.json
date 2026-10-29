@@ -5,5 +5,17 @@
     "helpers:pinGitHubActionDigests"
   ],
   "automerge": true,
-  "automergeStrategy": "rebase"
+  "automergeStrategy": "rebase",
+  "packageRules": [
+    {
+      "description": "Django 6.1 is blocked by T434679",
+      "matchDatasources": [
+        "pypi"
+      ],
+      "matchPackageNames": [
+        "/^django$/i"
+      ],
+      "allowedVersions": "<6.1"
+    }
+  ]
 }
