@@ -17,6 +17,13 @@
         "/^django$/i"
       ],
       "allowedVersions": "<6.1"
+    },
+    {
+      "description": "Batch dev/test dependencies into a single weekly PR",
+      "matchManagers": ["poetry", "pep621"],
+      "matchDepTypes": ["test", "dev"],
+      "groupName": "dev dependencies",
+      "schedule": ["* * * * 1"]
     }
   ]
 }
