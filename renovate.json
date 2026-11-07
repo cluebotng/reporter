@@ -2,28 +2,26 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "helpers:pinGitHubActionDigests",
-    "group:allNonMajor"
+    "helpers:pinGitHubActionDigests"
   ],
   "automerge": true,
   "automergeStrategy": "rebase",
   "packageRules": [
     {
       "description": "Django 6.1 is blocked by T434679",
-      "matchDatasources": [
-        "pypi"
-      ],
-      "matchPackageNames": [
-        "/^django$/i"
-      ],
+      "matchDatasources": ["pypi"],
+      "matchPackageNames": ["/^django$/i"],
       "allowedVersions": "<6.1"
     },
     {
-      "description": "Batch dev/test dependencies into a single weekly PR",
-      "matchManagers": ["poetry", "pep621"],
-      "matchDepTypes": ["test", "dev"],
-      "groupName": "dev dependencies",
-      "schedule": ["* * * * 1"]
+      "description": "Group CI updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "CI dependencies"
+    },
+    {
+      "description": "Group Python updates",
+      "matchManagers": ["poetry", "pep621", "pip_requirements", "pyenv"],
+      "groupName": "Python dependencies"
     }
   ]
 }
